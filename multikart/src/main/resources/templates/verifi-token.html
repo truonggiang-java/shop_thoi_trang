@@ -1,0 +1,13 @@
+<section class="pwd-page section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <h2 th:if="${error != ''}" th:text="${error}"></h2>
+                <th:block th:if="${success != ''}">
+                    <h2  th:text="${success}"></h2>
+                    <a href="http://localhost:8080/dang-nhap" class="btn btn-solid">Submit</a>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</section>

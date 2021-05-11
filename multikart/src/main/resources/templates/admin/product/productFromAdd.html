@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AdminLTE 3 | Dashboard</title>
+
+
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet"
+	th:href="@{https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback}">
+<!-- Font Awesome -->
+<link rel="stylesheet"
+	th:href="@{plugins/fontawesome-free/css/all.min.css}">
+<!-- Ionicons -->
+<link rel="stylesheet"
+	th:href="@{https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css}">
+<!-- Tempusdominus Bootstrap 4 -->
+<link rel="stylesheet"
+	th:href="@{/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css}">
+<!-- iCheck -->
+<link rel="stylesheet"
+	th:href="@{/plugins/icheck-bootstrap/icheck-bootstrap.min.css}">
+<!-- JQVMap -->
+<link rel="stylesheet" th:href="@{/plugins/jqvmap/jqvmap.min.css}">
+<!-- Theme style -->
+<link rel="stylesheet" th:href="@{/dist/css/adminlte.min.css}">
+<!-- overlayScrollbars -->
+<link rel="stylesheet"
+	th:href="@{/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}">
+<!-- Daterange picker -->
+<link rel="stylesheet"
+	href="/plugins/daterangepicker/daterangepicker.css">
+<!-- summernote -->
+<link rel="stylesheet"
+	th:href="@{/plugins/summernote/summernote-bs4.min.css}">
+
+</head>
+<body class="sidebar-mini layout-fixed" style="height: auto;">
+	<header th:replace="/admin/header.html"></header>
+	<div th:replace="/admin/aside.html"></div>
+	<div class="content-wrapper" style="min-height: 1690.6px;">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1>Simple Tables</h1>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a href="#">Home</a></li>
+							<li class="breadcrumb-item active">Simple Tables</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+			<!-- /.container-fluid -->
+		</section>
+		<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				<!-- /.row -->
+				<form action="">
+					<div class="row">
+						<div class="col-md-8">
+							<form id="formModal">
+								<div class="card-body">
+									<div id="errors"></div>
+									<div class="form-group">
+										<label for="name">Tên sản phẩm</label> <input type="text"
+											class="form-control" id="name" placeholder="Tên sản phẩm" />
+									</div>
+									<div class="form-group">
+										<label for="discount">Discount</label> <input type="number"
+											class="form-control" id="discount" placeholder="discount" />
+									</div>
+									<div class="form-group">
+										<label for="description">Description</label>
+										<textarea type="text" class="form-control" id="description"
+											placeholder="miêu tả sản phẩm"></textarea>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="col-md-4">
+							<form id="formModal">
+								<div class="form-group">
+									<label for="category">Danh mục</label> <select
+										style="width: 100%" id="category">
+										<th:block th:each="category : ${listCategories}">
+											<option th:value="${category.id}" th:text="${category.name}"></option>
+										</th:block>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="brands">Nhãn hiệu</label> <select id="brands"
+										style="width: 100%">
+										<th:block th:each="brand : ${listBrands}">
+											<option th:value="${brand.id}" th:text="${brand.name}"></option>
+										</th:block>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="priority">Priority</label> <select id="priority"
+										style="width: 100%">
+										<option value="1">Hot</option>
+										<option value="2">Nổi bật</option>
+										<option value="3">Bán chạy</option>
+
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="status">Trạng thái</label> <select id="status"
+										style="width: 100%">
+										<option value="1">Active</option>
+										<option value="0">Disable</option>
+									</select>
+								</div>
+							</form>
+						</div>
+
+					</div>
+					<hr>
+					<h2>Options</h2>
+					<div id="options" class="col-md-8"></div>
+					<button id="addMore" class="btn btn-success">Add more</button>
+					<hr>
+					<h2 id="textsku">Skus</h2>
+					<div id="skus"></div>
+					<button type="submit" class="btn btn-success" id="addProduct">Submit</button>
+				</form>
+			</div>
+
+		</section>
+
+	</div>
+
+	<footer th:replace="/admin/footer.html"></footer>
+	<!-- jQuery -->
+	<script src="/plugins/jquery/jquery.min.js"></script>
+	<!-- jQuery UI 1.11.4 -->
+	<script src="/plugins/jquery-ui/jquery-ui.min.js"></script>
+	<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+	<script>
+		$.widget.bridge('uibutton', $.ui.button)
+	</script>
+	<!-- Bootstrap 4 -->
+	<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- ChartJS -->
+	<script src="/plugins/chart.js/Chart.min.js"></script>
+	<!-- Sparkline -->
+	<script src="/plugins/sparklines/sparkline.js"></script>
+	<!-- JQVMap -->
+	<script src="/plugins/jqvmap/jquery.vmap.min.js"></script>
+	<script src="/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+	<!-- jQuery Knob Chart -->
+	<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
+	<!-- daterangepicker -->
+	<script src="/plugins/moment/moment.min.js"></script>
+	<script src="/plugins/daterangepicker/daterangepicker.js"></script>
+	<!-- Tempusdominus Bootstrap 4 -->
+	<script
+		src="/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+	<!-- Summernote -->
+	<script src="/plugins/summernote/summernote-bs4.min.js"></script>
+	<!-- overlayScrollbars -->
+	<script
+		src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="/dist/js/adminlte.js"></script>
+	<!-- AdminLTE for demo purposes -->
+	<script src="/dist/js/demo.js"></script>
+	<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+	<script src="/dist/js/pages/dashboard.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+	<script type="text/javascript">
+	function generation(options,html=""){
+		options.forEach((o,index) =>{
+			html +=`
+				<div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control name" id="option${index}" placeholder="Enter option" value="${o.name}">
+                    </div>
+                </div>
+                <div class="col-md-7" id="optionValue${index}">
+                    <div class="form-group">
+                        <input type="text" class="form-control values" id="value${index}" placeholder="Enter value">
+                    </div>
+                    ${o.value.length > 0 ? o.value.map(i => (`<label>${i}</label>`)) : ""}
+                </div>
+                ${index !=0 ? `
+                		<div class="col-md-1">
+                <div class="form-group">
+                   <button class="btn btn-danger removeOptions" id="${index}">Xóa</button>
+                </div>
+            </div>`:""}
+    </div>
+			`
+		})
+		$("#options").html(html);
+	}
+		function generationSku(skus){
+			$("#skus").html("");
+			let html="";
+			skus.forEach((s,index) =>{
+				html +=`
+					<div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <button class="btn btn-danger" id="remove${index}"><i class="fa fa-trash"></i> </button>
+                        </div>
+                    </div>
+                    <div class="col-md-2" id="variant${index}">
+                        <div class="form-group">
+                        
+                            <label>${s.value.map(m => (`<span>${m}</span>`))}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2" id="optionValues${index}">
+                        <div class="form-group">
+                            <input type="text" value="${s.code}" class="form-control input" name="code" id="code-${index}" placeholder="Enter code">
+                        </div>
+                    </div>
+                    <div class="col-md-2" id="importPrice${index}">
+                        <div class="form-group">
+                            <input type="number" value="${s.importPrice}" class="form-control importPrice input" name="importPrice" id="importPrice-${index}" placeholder="Enter importPrice">
+                        </div>
+                    </div>
+                    <div class="col-md-2" id="exportPrice${index}">
+                        <div class="form-group">
+                            <input type="number" value="${s.exportPrice}" class="form-control exportPrice input" name="exportPrice" id="exportPrice-${index}" placeholder="Enter exportPrice">
+                        </div>
+                    </div>
+                    <div class="col-md-2" id="stock${index}">
+                        <div class="form-group">
+                            <input type="number" value="${s.stock}" class="form-control stock input" id="stock-${index}"name="stock" placeholder="Enter stock">
+                        </div>
+                    </div>
+                </div>`
+        
+			})
+			$("#skus").append(html);
+		}
+		$(document).ready(function(){
+			let options=[
+				{
+					name : "",
+					value: []
+				}
+			]
+			let skus=[];
+			if(skus.length == 0){
+				$("#textsku").attr("hidden",true);
+			}
+			$("#options").html("");
+			generation(options);
+			
+			$("#addMore").click(function(e){
+				e.preventDefault();
+				if(options.length>2){
+					return; 
+				}
+			options.push({
+				name : "",
+				value: []
+			})
+			skus=resetState(options);
+			generation(options);
+		})
+			$(document).on("click",".removeOptions",function(e){
+				e.preventDefault();
+				options.splice(+$(this).attr("id"),1);
+				skus=resetState(options);
+				generation(options);
+				generationSku(skus);
+			})
+		
+			$(document).on("keydown",".values",function(e){
+				const index= $(this).attr("id").slice(5);
+				if(e.keyCode === 13){
+					e.preventDefault();
+					options[+index].value.push($(this).val());
+				 	$(`#optionValue${index}`).append(`
+						<label>${$(this).val()}</label>
+						`);
+					$(this).val("");
+					skus=resetState(options);
+					console.log(skus);
+				
+					if(skus.length !==0){
+					
+						$("#skus").attr("hidden",false);
+						$("#textsku").attr("hidden",false);
+					
+						generationSku(skus);
+					}
+				
+				}
+			
+				})
+		// push append là thêm mảng or chuỗi
+		//{} là để hiển thị giữ liệu () là để lưu giữ liệu
+			$(document).on("blur",".name",function(e){//blur thoat ra khoi the day la se nhan
+			const index= $(this).attr("id").slice(6);
+				options[+index].name=$(this).val();
+				/* console.log(options); */
+				
+			})
+			$(document).on("blur",".input",function(e){
+				const name =$(this).attr("name");
+				const index=$(this).attr("id").split("-")[1];
+				skus[index][name]=$(this).val();
+				console.log(skus);
+				
+			})
+			$("#addProduct").click(function(e){
+				e.preventDefault();
+				const data ={
+					name: $("#name").val(),
+					discount: $("#discount").val(),
+					description: $("#description").val(),
+					category: $("#category").val(),
+					brands: $("#brands").val(),
+					priority: $("#priority").val(),
+					slug : changeToSlug($("#name").val()),
+					status: +$("#status").val() == 1 ? true : false,
+					options,
+					skus		
+				}
+				console.log(data)
+				$.ajax({
+					headers: {
+	                    'Content-Type':'application/json'
+	                },
+				method: 'POST',
+				url: 'http://localhost:8080/api/v1/products',
+				data: JSON.stringify(data),
+				success: function(response){
+					window.location.href="http://localhost:8080/admin/products";
+				},
+				error: function(errors){
+					console.log(errors);
+				}
+			})
+			})
+			
+		const resetState = (options) => {
+			
+    	let skus = [];
+    
+    	if(options.length === 1) {
+    	
+        options[0].value.forEach(a=>{
+            skus.push({code : "",stock: 10,importPrice : 100000,exportPrice: 200000,value : [a]});//SKU = Đơn vị Giữ hàng. Có nghĩa là, đơn vị đo lường xuất nhập kho cơ bản
+          
+        });
+        
+    	}else if(options.length === 2) {
+        options[0].value.forEach(a=>{
+            options[1].value.forEach(b=>{
+
+                skus.push({code :"",stock : 10,importPrice : 100000,exportPrice : 200000,value: [a,b]});
+                
+            });
+        });
+   		 }else if(options.length === 3) {
+        options[0].value.forEach(a=>{
+            options[1].value.forEach(b=>{
+                options[2].value.forEach(c=>{
+                    skus.push({code: "",stock : 10,importPrice : 100000,exportPrice: 200000,value : [a,b,c]});
+                });
+            });
+        });
+    	}
+    	/* console.log(skus); */
+    	return skus
+		}		
+		
+		})
+	</script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AdminLTE 3 | Dashboard</title>
+
+
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+<!-- Ionicons -->
+<link rel="stylesheet"
+	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!-- Tempusdominus Bootstrap 4 -->
+<link rel="stylesheet"
+	href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+<!-- iCheck -->
+<link rel="stylesheet"
+	href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+<!-- JQVMap -->
+<link rel="stylesheet" href="/plugins/jqvmap/jqvmap.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="/dist/css/adminlte.min.css">
+<!-- overlayScrollbars -->
+<link rel="stylesheet"
+	href="/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+<!-- Daterange picker -->
+<link rel="stylesheet"
+	href="/plugins/daterangepicker/daterangepicker.css">
+<!-- summernote -->
+<link rel="stylesheet" href="/plugins/summernote/summernote-bs4.min.css">
+
+</head>
+<body class="sidebar-mini layout-fixed" style="height: auto;">
+	<header th:replace="/admin/header.html"></header>
+	<div th:replace="/admin/aside.html"></div>
+	<div class="content-wrapper" style="min-height: 1690.6px;">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1>Simple Tables</h1>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a href="#">Home</a></li>
+							<li class="breadcrumb-item active">Simple Tables</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+			<!-- /.container-fluid -->
+		</section>
+		<button class="btn btn-warning" id="add">Thêm mới</button>
+		<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				<!-- /.row -->
+				<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+								<h3 class="card-title">Bảng Category</h3>
+
+								<div class="card-tools">
+									<div class="input-group input-group-sm" style="width: 150px;">
+										<input type="text" class="form-control float-right"
+											placeholder="Search">
+
+										<div class="input-group-append">
+											<button type="submit" class="btn btn-default">
+												<i class="fas fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /.card-header -->
+							<div class="card-body table-responsive p-0">
+								<table class="table table-hover text-nowrap">
+									<thead>
+										<tr>
+											
+											<th>Name</th>
+											<th>Slug</th>
+											<th>Status</th>
+											<th>ParentName</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody id="category">
+
+
+									</tbody>
+								</table>
+							</div>
+							<!-- /.card-body -->
+						</div>
+						<!-- /.card -->
+					</div>
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.container-fluid -->
+		</section>
+		<!-- /.content -->
+	</div>
+	<div id="modal" class="modal fade bd-example-modal-lg" tabindex="-1"
+		role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="card card-primary">
+					<div class="card-header">
+						<h3 class="card-title">Quick Example</h3>
+					</div>
+					<!-- /.card-header -->
+					<!-- form start -->
+					<form id="formModal">
+						<div class="card-body">
+							<div id="errors"></div>
+							<div class="form-group">
+								<input type="hidden" name="categoryId" value=""> <label
+									for="name">Name</label> <input type="text" class="form-control"
+									id="name" placeholder="Tên danh mục">
+
+							</div>
+							<div class="form-group">
+								<label for="parentId">Danh mục cha</label> <select
+									class="form-control" id="parentId">
+
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="status">Trạng thái</label> <input type="checkbox"
+									class="form-control" id="status" name="status">
+							</div>
+
+						</div>
+						<!-- /.card-body -->
+
+						<div class="card-footer">
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="/admin/footer.html"></footer>
+	<!-- jQuery -->
+	<script src="/plugins/jquery/jquery.min.js"></script>
+	<!-- jQuery UI 1.11.4 -->
+	<script src="/plugins/jquery-ui/jquery-ui.min.js"></script>
+	<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+	<script>
+		$.widget.bridge('uibutton', $.ui.button)
+	</script>
+	<!-- Bootstrap 4 -->
+	<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- ChartJS -->
+	<script src="/plugins/chart.js/Chart.min.js"></script>
+	<!-- Sparkline -->
+	<script src="/plugins/sparklines/sparkline.js"></script>
+	<!-- JQVMap -->
+	<script src="/plugins/jqvmap/jquery.vmap.min.js"></script>
+	<script src="/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+	<!-- jQuery Knob Chart -->
+	<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
+	<!-- daterangepicker -->
+	<script src="/plugins/moment/moment.min.js"></script>
+	<script src="/plugins/daterangepicker/daterangepicker.js"></script>
+	<!-- Tempusdominus Bootstrap 4 -->
+	<script
+		src="/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+	<!-- Summernote -->
+	<script src="/plugins/summernote/summernote-bs4.min.js"></script>
+	<!-- overlayScrollbars -->
+	<script
+		src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="/dist/js/adminlte.js"></script>
+	<!-- AdminLTE for demo purposes -->
+	<script src="/dist/js/demo.js"></script>
+	<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+	<script src="/dist/js/pages/dashboard.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var myStorage = window.sessionStorage;
+	        var token = sessionStorage.getItem('multikart-token');
+			$.ajax({
+				headers:{
+					'Authorization' : 'Bearer ' + token
+				},
+				method: 'GET',
+				 url: 'http://localhost:8080/api/v1/categories',
+				 success:function(response){
+					let html="";
+					let htmlModal="";
+					if(response.length>0){
+						htmlModal += `<option value="0">Danh mục cha</option>`
+						response.forEach(function(r){
+							htmlModal +=`<option value="${+r.id}">${r.name}</option>` 	
+							html += `<tr>
+								<td id="name${r.id}">${r.name}</td>
+								<td id="slug${r.slug}">${r.slug}</td>
+								<td><span id="status${r.id}" class="${+r.status ===1 ? 'badge badge-success' :'badge badge-danger'}">${+r.status ===1 ? 'Actived' : 'Disabled'}</span></td>// them dau +r thi chuyen sang so luc dau no la chuoi
+								<td id="parentName${r.id}">${r.parentName ? r.parentName : 'danh-muc-cha'}</td>
+								<td>
+									<button id="${r.id}" class="btn btn-warning update" ><i class="fa fa-pen">Update</i></button>
+									<button id="${r.id}" class="btn btn-danger delete" ><i class="fa fa-trash">Delete</i></button>
+								</td>
+							</tr>`
+							$("#category").html(html);
+							$("#parentId").html(htmlModal);
+							
+						})
+					} 
+				 },
+				error:function(error){
+					console.log(error);
+				}
+			})
+			
+			$(document).on('click','.update',function(e){
+				const id=+$(this).attr("id");
+				
+				e.preventDefault(); //khi click vao se ko chuyen trang ma tu dong giu nguyen va cap nhat
+				$("#modal").modal('show'); //trong bootstrap 4 html
+				console.log(+$(this).attr("id"));// + co nghia chuyen sang so
+				
+				$.ajax({
+					headers:{
+						'Authorization' : 'Bearer ' + token
+					},
+					method :'GET',
+					url: `http://localhost:8080/api/v1/categories/${+$(this).attr("id")}`, // nhay ` de dung $
+					success: function(response){
+						$("#name").val(response.name);
+						$("#status").prop('checked',response.status); //tra ve la true nghia la tu click dau
+						$("#parentId").val(+response.parentId);
+						$("input[name='categoryId']").val(id); // vi ko de gia tri gi lay gia tri click
+						
+					},
+					error: function(error){
+						console.log(error);
+					}
+				})
+			})
+			$(document).on('click','.delete',function(e){
+				const id= +$(this).attr('id');				
+				$.ajax({
+					headers:{
+						'Authorization' : 'Bearer ' + token
+					},
+					method:"DELETE",
+					url:`http://localhost:8080/api/v1/categories/${+$(this).attr("id")}`,
+					success:function(response){
+						var error=response.status;
+						var data=response.data;
+						if(error.includes("error")){
+							Swal.fire({
+								  icon: 'error',
+								  title: 'Error...',
+								  text: 'Danh mục chứa sản phẩm không thể xóa',
+								  footer: '<a href>Why do I have this issue?</a>'
+								})
+						}
+						else if(error.includes('success')){
+							const Toast = Swal.mixin({
+								  toast: true,
+								  position: 'top-end',
+								  showConfirmButton: false,
+								  timer: 3000,
+								  timerProgressBar: true,
+								  didOpen: (toast) => {
+								    toast.addEventListener('mouseenter', Swal.stopTimer)
+								    toast.addEventListener('mouseleave', Swal.resumeTimer)
+								  }
+								})
+
+								Toast.fire({
+								  icon: 'error',
+								  title: 'Đã xóa thành công'
+								})
+								$.ajax({
+									headers:{
+										'Authorization' : 'Bearer ' + token
+									},
+									method: 'GET',
+									 url: 'http://localhost:8080/api/v1/categories',
+									 success:function(response){
+										let html="";
+										let htmlModal="";
+										if(response.length>0){
+											htmlModal += `<option value="0">Danh mục cha</option>`
+											response.forEach(function(r){
+												htmlModal +=`<option value="${+r.id}">${r.name}</option>` 	
+												html += `<tr>
+													<td id="name${r.id}">${r.name}</td>
+													<td id="slug${r.slug}">${r.slug}</td>
+													<td><span id="status${r.id}" class="${+r.status ===1 ? 'badge badge-success' :'badge badge-danger'}">${+r.status ===1 ? 'Actived' : 'Disabled'}</span></td>// them dau +r thi chuyen sang so luc dau no la chuoi
+													<td id="parentName${r.id}">${r.parentName ? r.parentName : 'danh-muc-cha'}</td>
+													<td>
+														<button id="${r.id}" class="btn btn-warning update" ><i class="fa fa-pen">Update</i></button>
+														<button id="${r.id}" class="btn btn-danger delete" ><i class="fa fa-trash">Delete</i></button>
+													</td>
+												</tr>`
+												$("#category").html(html);
+												$("#parentId").html(htmlModal);
+												
+											})
+										} 
+									 },
+									error:function(error){
+										console.log(error);
+									}
+								})
+								
+						}
+					},
+					error:function(errors){
+						console.log(errors);
+					}
+				})
+			})
+			$("#formModal").submit(function(e){ //bat su kien
+				e.preventDefault();
+				const id=+$("input[name='categoryId']").val();
+			
+				const data={
+						id :$("input[name='categoryId']").val() ? $("input[name='categoryId']").val() : null,
+						name :$("#name").val(),
+						slug : changeToSlug($("#name").val()),
+						parentId :$("#parentId").val(),
+						status :$("#status").prop("checked")
+				};
+				
+				$.ajax({
+					headers: {
+	                    'Content-Type':'application/json',
+	                    'Authorization' : 'Bearer ' + token
+	                },
+					method :id ? 'PUT' :'POST',
+					url:`http://localhost:8080/api/v1/categories${id ? `/${+id}` : ""}`,
+					data :JSON.stringify(data),// de chuyen thanh json
+					success: function(response){
+						if(id){ //co nghia la id ton tai
+							$(`#name${id}`).text(response.name);
+							$(`#slug${id}`).text(response.slug);
+							$(`#status${id}`).text(response.status ? "Active" : "Disable")
+							$(`#status${id}`).removeClass();
+							$(`#status${id}`).addClass(response.status ? "badge badge-success" : "badge badge-danger");
+							$(`#parentName${id}`).text(response.parentName ===null ? "Danh mục cha" : response.parentName);
+							$(`#modal`).modal('hide');
+							const Toast = Swal.mixin({
+								  toast: true,
+								  position: 'top-end',
+								  showConfirmButton: false,
+								  timer: 3000,
+								  timerProgressBar: true,
+								  didOpen: (toast) => {
+								    toast.addEventListener('mouseenter', Swal.stopTimer)
+								    toast.addEventListener('mouseleave', Swal.resumeTimer)
+								  }
+								})
+
+								Toast.fire({
+								  icon: 'success',
+								  title: 'Signed in successfully'
+								})
+						}
+						else{
+							$("#category").append(
+									`<tr>
+									
+									<td id="name${response.id}">${response.name}</td>
+									<td id="slug${response.slug}">${response.slug}</td>
+									<td><span id="status${response.id}" class="${+response.status ===1 ? 'badge badge-success' :'badge badge-danger'}">${+response.status ===1 ? 'Actived' : 'Disabled'}</span></td>// them dau +r thi chuyen sang so luc dau no la chuoi
+									<td id="parentName${response.id}">${response.parentName !=null ? response.parentName : 'danh-muc-cha'}</td>
+									<td>
+										<button id="${response.id}" class="btn btn-warning update" ><i class="fa fa-pen">Update</i></button>
+										<button id="${response.id}" class="btn btn-danger delete" ><i class="fa fa-trash">Delete</i></button>
+									</td>
+								</tr>`)
+								const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
+
+Toast.fire({
+  icon: 'success',
+  title: 'Signed in successfully'
+})							
+							if(response){
+								$.ajax({
+									headers:{
+										'Authorization' : 'Bearer ' + token
+									},
+									method: 'GET',
+									 url: 'http://localhost:8080/api/v1/categories',
+									 success:function(response){
+										let html="";
+										let htmlModal="";
+										if(response.length>0){
+											htmlModal += `<option value="0">Danh mục cha</option>`
+											response.forEach(function(r){
+												htmlModal +=`<option value="${+r.id}">${r.name}</option>` 	
+												html += `<tr>
+													<td id="name${r.id}">${r.name}</td>
+													<td id="slug${r.slug}">${r.slug}</td>
+													<td><span id="status${r.id}" class="${+r.status ===1 ? 'badge badge-success' :'badge badge-danger'}">${+r.status ===1 ? 'Actived' : 'Disabled'}</span></td>// them dau +r thi chuyen sang so luc dau no la chuoi
+													<td id="parentName${r.id}">${r.parentName ? r.parentName : 'danh-muc-cha'}</td>
+													<td>
+														<button id="${r.id}" class="btn btn-warning update" ><i class="fa fa-pen">Update</i></button>
+														<button id="${r.id}" class="btn btn-danger delete" ><i class="fa fa-trash">Delete</i></button>
+													</td>
+												</tr>`
+												$("#category").html(html);
+												$("#parentId").html(htmlModal);
+												
+											})
+										} 
+									 },
+									error:function(error){
+										console.log(error);
+									}
+								})
+								
+							}	
+							$(`#modal`).modal('hide');
+							
+						}
+						
+					},
+					error: function(error){
+						if(error.responseText){
+
+							$("#errors").html(error.responseText =`<span class="alert alert-danger">${error.responseText}</span>`);
+						}
+						else{
+							let errors="";
+							error.responseJSON.forEach(function (error){
+								errors +=`<span class="alert alert-danger">${error}</span>`
+								
+							})
+							//.response thi no ra han 1 cuc object .data thi no lay moi data
+							$("#errors").html(errors);
+						}
+						
+						
+					}
+				})
+			})
+			$('#add').click(function(e){
+				e.preventDefault();
+				$("#name").val("");
+				$("#status").prop("checked",true);
+				$("#parentId").val(0);
+				$("input[name='categoryId']").val(null);
+				$('#modal').modal('show');
+			})
+			
+		})
+	</script>
+</body>
+</html>
